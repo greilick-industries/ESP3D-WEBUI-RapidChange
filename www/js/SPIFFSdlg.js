@@ -200,6 +200,7 @@ function SPIFFSUploadProgressDisplay(oEvent) {
     }
 }
 
+// Added refresh for dev purposes
 function SPIFFS_UploadFile() {
     if (http_communication_locked) {
         alertdlg(translate_text_item("Busy..."), translate_text_item("Communications are currently locked, please wait and retry."));
@@ -227,6 +228,7 @@ function SPIFFS_UploadFile() {
     SendFileHttp(url, formData, SPIFFSUploadProgressDisplay, SPIFFSUploadsuccess, SPIFFSUploadfailed)
 }
 
+
 function SPIFFSUploadsuccess(response) {
     id('SPIFFS-select').value = "";
     id("SPIFFS_file_name").innerHTML = translate_text_item("No file chosen");
@@ -239,6 +241,11 @@ function SPIFFSUploadsuccess(response) {
     response = response.replace("\"status\":\"Ok\"", "\"status\":\"Upload done\"");
     var jsonresponse = JSON.parse(response);
     SPIFFSdispatchfilestatus(jsonresponse);
+
+    // Added refresh and nav to dev tab for dev purposes
+    // Delete for production
+    location.reload();
+    
 }
 
 function SPIFFSUploadfailed(errorcode, response) {

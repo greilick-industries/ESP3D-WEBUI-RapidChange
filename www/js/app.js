@@ -562,6 +562,9 @@ function initUI() {
     //update FW version
     if (typeof id('FW_VERSION') != "undefined") id('FW_VERSION').innerHTML = fw_version;
     // Get the element with id="defaultOpen" and click on it
+
+    
+
     id("maintablink").click();
     if ((target_firmware == "grbl-embedded") || (target_firmware == "grbl-embedded")) {
         if (typeof id("grblcontroltablink") !== 'undefined') {

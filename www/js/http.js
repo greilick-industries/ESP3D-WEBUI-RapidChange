@@ -10,7 +10,7 @@ function clear_cmd_list() {
     processing_cmd = false;
 }
 
-function http_resultfn(response_text) {
+function http_resultfn(response_text) { 
     if ((http_cmd_list.length > 0) && (typeof http_cmd_list[0].resultfn != 'undefined')) {
         var fn = http_cmd_list[0].resultfn;
         fn(response_text);

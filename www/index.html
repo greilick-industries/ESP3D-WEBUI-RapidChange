@@ -57,7 +57,7 @@
         <file-include w3-include-html="'sub/settingstab.html'"></file-include>
         <file-include w3-include-html="'sub/tablettab.html'"></file-include>
         <!-- devtools -->
-        <file-include w3-include-html="'sub/devtab.html'"></file-include>
+        <file-include w3-include-html="'sub/devkit/devtab.html'"></file-include>
       </div>
       <!-- / content -->
     </div>
@@ -78,8 +78,11 @@
     <file-include w3-include-html="'sub/preferencesdlg.html'"></file-include>
     <file-include w3-include-html="'sub/restartdlg.html'"></file-include>
     <file-include w3-include-html="'sub/UIdisableddlg.html'"></file-include>
+    <!-- devtools -->
+    <file-include w3-include-html="'sub/devkit/macroeditordlg.html'"></file-include>
     <!-- / template -->
     <!--removeIf(cleanheader)-->
+    <script src="js/bundle.js"></script>
     <script src="js/util.js"></script>
     <script src="js/wizard.js"></script>
     <script src="js/http.js"></script>
@@ -118,6 +121,10 @@
     <script src="js/custom.js"></script>
     <script src="js/numpad.js"></script>
     <script src="js/tablet.js"></script>
+    <!-- dev tools-->
+    <script src="js/devkit/macros.js"></script>
+    <script src="js/devkit/macroeditordlg.js"></script>
+    <script src="js/devkit/blockdlg.js"></script>
     <!--endRemoveIf(cleanheader)-->
     <!-- smoosh -->
     <script src="js/app.js"></script>
