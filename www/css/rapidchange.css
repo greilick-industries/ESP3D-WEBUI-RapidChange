@@ -1,0 +1,23 @@
+.rapid-change-container {
+    
+}
+
+.config-list-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.2rem;
+    border-radius: 0.2rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0.3rem;
+}
+
+.config-label {
+    align-self: center;
+}
+
+.rc-panel-max-height {
+    max-height: 550px;
+}
+

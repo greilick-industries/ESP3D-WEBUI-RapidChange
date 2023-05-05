@@ -5,6 +5,6 @@ function updateIndexFile() {
 
 window.addEventListener('load', () => {
     setTimeout(() => {
-        id('devtablink').click();
-    }, 1000);
+        id('rapidchangetablink').click();
+    }, 2000);
 });
