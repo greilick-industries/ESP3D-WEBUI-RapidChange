@@ -3,8 +3,8 @@ function updateIndexFile() {
     id("SPIFFS_select_files").click();
 }
 
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        id('rapidchangetablink').click();
-    }, 2000);
-});
+// window.addEventListener('load', () => {
+//     setTimeout(() => {
+//         id('rapidchangetablink').click();
+//     }, 2000);
+// });

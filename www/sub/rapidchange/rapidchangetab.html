@@ -1,9 +1,23 @@
 <div id="rapidchangetab" class="tabcontent">
     <div class="panel-flex-col">
+        <div class="panels-bar">
+            <button id="mag-opt-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('mag-opt-btn', 'magazine_settings')">Magazine Options</button>
+            <button id="coord-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('coord-btn', 'coordinate_settings')">XY Coordinates</button>
+            <button id="zed-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('zed-btn', 'zed_settings')">Z Coordinates</button>
+            <button id="speed-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('speed-btn', 'speed_settings')">Speeds</button>
+            <button id="infrared-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('infrared-btn', 'infrared_settings')">Infrared Probe</button>
+            <button id="touch-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('touch-btn', 'touch_settings')">Touch Probe</button>
+            <button id="control-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('control-btn', 'controlPanel')">Controls Panel</button>
+            <button id="command-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('command-btn', 'commandsPanel')">Command Panel</button>
+            
+        </div>
         <div id="rcpanels" class="grid-container">
-            <file-include w3-include-html="'sub/rapidchange/rapidchangeconfigpanel.html'"></file-include>
-            
-            
+            <file-include w3-include-html="'sub/rapidchange/magazinesettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/coordinatesettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/zedsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/speedsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/infraredsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/touchsettings.html'"></file-include>
         </div>
     </div>
 </div>

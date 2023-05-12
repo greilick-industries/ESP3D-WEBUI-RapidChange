@@ -1,4 +1,5 @@
 var controlsPanel;
+
 var commandPanel;
 var grblPanel;
 var dashboardParent;
@@ -23,14 +24,15 @@ function wireEvents() {
 }
 
 function bringPanelsToRapidChange() {
-    controlsPanel.classList.add('rc-panel-max-height');
     commandPanel.classList.add('rc-panel-max-height');
+    controlsPanel.classList.add('rc-panel-max-height');
     rapidChangeParent.append(controlsPanel, commandPanel);
 }
 
 function sendPanelsToDashboard() {
     controlsPanel.classList.remove('rc-panel-max-height');
     commandPanel.classList.remove('rc-panel-max-height');
+    
     dashboardParent.insertBefore(controlsPanel, grblPanel);
     dashboardParent.insertBefore(commandPanel, grblPanel);
 }
