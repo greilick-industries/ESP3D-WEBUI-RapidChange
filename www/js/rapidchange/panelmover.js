@@ -1,7 +1,7 @@
 var controlsPanel;
-
 var commandPanel;
 var grblPanel;
+var filesPanel;
 var dashboardParent;
 var rapidChangeParent;
 
@@ -14,6 +14,7 @@ function getPanels() {
     controlsPanel = id('controlPanel');
     commandPanel = id('commandsPanel');
     grblPanel = id('grblPanel');
+    filesPanel = id('filesPanel');
     dashboardParent = controlsPanel.parentNode;
     rapidChangeParent = id('rcpanels');
 }
@@ -26,13 +27,18 @@ function wireEvents() {
 function bringPanelsToRapidChange() {
     commandPanel.classList.add('rc-panel-max-height');
     controlsPanel.classList.add('rc-panel-max-height');
-    rapidChangeParent.append(controlsPanel, commandPanel);
+    grblPanel.classList.add('rc-panel-max-height');
+    filesPanel.classList.add('rc-panel-max-height');
+    rapidChangeParent.append(controlsPanel, commandPanel, grblPanel, filesPanel);
 }
 
 function sendPanelsToDashboard() {
     controlsPanel.classList.remove('rc-panel-max-height');
     commandPanel.classList.remove('rc-panel-max-height');
-    
+    grblPanel.classList.remove('rc-panel-max-height');
+    filesPanel.classList.remove('rc-panel-max-height');
+    dashboardParent.append(filesPanel);
+    dashboardParent.insertBefore(grblPanel, id('temperaturesPanel'));
     dashboardParent.insertBefore(controlsPanel, grblPanel);
     dashboardParent.insertBefore(commandPanel, grblPanel);
 }

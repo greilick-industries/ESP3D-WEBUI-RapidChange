@@ -76,6 +76,11 @@ function buildCategoryMap() {
 
 function getSettingsRoots() {
     magSettingsRoot = id('magazine_settings_list');
+    coordSettingsRoot = id('coordinate_settings_list');
+    speedSettingsRoot = id('speed_settings_list');
+    zedSettingsRoot = id('zed_settings_list');
+    touchSettingsRoot = id('touch_settings_list');
+    infraredSettingsRoot = id('infrared_settings_list');
 }
 
 function fetchRCSettings() {
@@ -95,7 +100,8 @@ function createLabelElements() {
         let labelEl = document.createElement('span');
         labelEl.className = 'config-label';
         let labelText = s.label
-            .substring(rcPrefixLength);        
+            .substring(rcPrefixLength)
+            .replaceAll('_', ' ');        
         labelEl.innerText = labelText;
         s.labelEl = labelEl;
     });
@@ -114,7 +120,7 @@ function modifyClonedElement(clone) {
     if (clone) {
         clone.style.margin = '0';
         clone.style.justifySelf = 'end';
-        clone.style.width = '100%';
+        clone.style.width = '170px';
         let wrapper = clone.querySelector('.item-flex-row');
         wrapper.style.justifyContent = 'stretch';
         wrapper.querySelector('table').style.width = '100%';
@@ -129,7 +135,31 @@ function modifyClonedElement(clone) {
 
 function appendListItemElements() {
     rcSettings.forEach(s => {
-        magSettingsRoot.append(s.listItemEl);
+        let category = categoryMap.get(s.label);
+        switch (category) {
+            case 'mag':
+                magSettingsRoot.append(s.listItemEl);
+                break;
+            case 'coord':
+                coordSettingsRoot.append(s.listItemEl);
+                break;
+            case 'zed':
+                zedSettingsRoot.append(s.listItemEl);
+                break;
+            case 'speed':
+                speedSettingsRoot.append(s.listItemEl);
+                break;
+            case 'touch':
+                touchSettingsRoot.append(s.listItemEl);
+                break;
+            case 'infrared':
+                infraredSettingsRoot.append(s.listItemEl);
+                break;
+            default:
+                console.log('Settings category does not exist.');
+                break;
+        }
+        
     });
 }
 
@@ -150,6 +180,11 @@ function loadConfigSettings() {
 function unloadConfigSettings() {
     if (configSettingsLoaded) {
         magSettingsRoot.innerHTML = '';
+        coordSettingsRoot.innerHTML = '';
+        zedSettingsRoot.innerHTML = '';
+        speedSettingsRoot.innerHTML = '';
+        touchSettingsRoot.innerHTML = '';
+        infraredSettingsRoot.innerHTML = '';
         rcSettings = [];
         configSettingsLoaded = false;
     }

@@ -18,8 +18,8 @@ function createFile() {
 
 function getFileText() {
     let fileText = 'RapidChange:\n';
-    if (configSettingsList.length != 0) {
-        configSettingsList.forEach(s => {
+    if (rcSettings.length != 0) {
+        rcSettings.forEach(s => {
             let name = '  ' + s.label.substring(rcPrefixLength) + ': ';
             let value = getSettingValue(s) + '\n';
             fileText += name + value;

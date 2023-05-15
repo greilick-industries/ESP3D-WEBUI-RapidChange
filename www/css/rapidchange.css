@@ -44,6 +44,9 @@
 
 .config-label {
     align-self: center;
+    padding-right: 0.5rem;
+    text-transform: capitalize;
+    white-space: nowrap;
 }
 
 .dark-body {
@@ -60,13 +63,19 @@
 }
 
 .panel-rc {
-    margin-bottom: 20px !important;
+    margin-bottom: 0 !important;
     background-color: var(--background-light) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 4px !important;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
     color: white !important;
+    width: min-content !important;
+}
+
+.panel-rc > .panel-body {
+    height: 100%;
+    padding-bottom: 0 !important;
 }
 
 .panel-rc > .panel-heading,
@@ -77,12 +86,18 @@
     color: white !important;
 }
 
+.panel-flex-col-rc {
+    display: flex;
+    flex-direction: column;
+    width: min-content !important;
+}
+
 .panels-bar {
     display: flex;
     background-color: transparent;
     padding: 5px 0;
-    margin-left: 10px;
-    margin-right: 0;
+    /* margin-left: 10px;
+    margin-right: 0; */
     gap: 10px;
     /* border-radius: 4px;
     border: 1px solid var(--border-color); */
@@ -134,7 +149,7 @@
 }
 
 .active-rc {
-    background-color: var(--rapid-change-orange) !important;
+    background-color: var(--label-background) !important;
     color: white !important;
     border-color: var(--border-color) !important;
 }
@@ -148,5 +163,19 @@
 .tab-rc:hover {
     background-color: var(--background-dark) !important;
     border-radius: 8px 8px 0 0 !important;
+}
+
+#rcpanels {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+    padding-top: 5px;
+}
+
+#commandsPanel,
+#grblPanel,
+#filesPanel,
+#controlPanel {
+    min-width: 600px;
 }
 
