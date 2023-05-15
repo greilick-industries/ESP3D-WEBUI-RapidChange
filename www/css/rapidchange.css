@@ -1,0 +1,181 @@
+:root {
+    --button-light: #3d464f;
+    --button-dark: #30383f;
+    --rapid-change-orange: #fa6401;
+    --rapid-change-orange-light: #fe8230;
+    --rapid-change-orange-dark: #e15a00;
+    --background-light: #303033; 
+    --background-dark: #212123;
+    --label-background: #57575d;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+.checkbox-rc:checked {
+    accent-color: var(--button-dark);
+}
+
+.command-content-rc {
+    background-color: var(--label-background);
+    color: white;
+    border-color: var(--border-color);
+}
+
+.command-input-rc {
+    background-color: var(--label-background);
+    border-color: var(--border-color);
+    color: white;
+}
+
+.config-panels {
+    display: flex;
+}
+
+.config-list-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.2rem;
+    border-radius: 0.2rem;
+    border: 1px solid var(--border-color);
+    padding: 0.3rem;
+    background-color: var(--label-background);
+}
+
+.config-label {
+    align-self: center;
+    padding-right: 0.5rem;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.dark-body {
+    background-color: var(--background-dark);
+}
+
+.panel-hide {
+    display: none;
+}
+
+.panel-btns {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.panel-rc {
+    margin-bottom: 0 !important;
+    background-color: var(--background-light) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    color: white !important;
+    width: min-content !important;
+}
+
+.panel-rc > .panel-body {
+    height: 100%;
+    padding-bottom: 0 !important;
+}
+
+.panel-rc > .panel-heading,
+.panel-rc > .panel-footer {
+    background-color: var(--rapid-change-orange) !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    color: white !important;
+}
+
+.panel-flex-col-rc {
+    display: flex;
+    flex-direction: column;
+    width: min-content !important;
+}
+
+.panels-bar {
+    display: flex;
+    background-color: transparent;
+    padding: 5px 0;
+    /* margin-left: 10px;
+    margin-right: 0; */
+    gap: 10px;
+    /* border-radius: 4px;
+    border: 1px solid var(--border-color); */
+}
+
+.btn-rc {
+    color: white !important;
+    background-color: var(--button-light) !important;
+    border-color: var(--button-dark) !important;
+}
+
+.btn-rc:focus,
+.btn-rc:hover {
+    color: white !important;
+    background-color: var(--button-dark) !important;
+}
+
+.btn-rc-orange {
+    color: white !important;
+    background-color: var(--rapid-change-orange) !important;
+    border-color: var(--rapid-change-orange-dark) !important;
+}
+
+.btn-rc-orange:focus,
+.btn-rc-orange:hover {
+    color: white !important;
+    background-color: var(--rapid-change-orange-dark) !important;
+}
+
+.dropbtn-rc:hover {
+    background-color: var(--background-dark) !important;
+}
+
+.dropbtn-rc path {
+    fill: white !important;
+}
+
+.navbar-rc {
+    background-color: var(--background-light) !important;
+    border-color: var(--border-color) !important;
+}
+
+.navbar-brand-rc {
+    color: white !important;
+}
+
+.rc-panel-max-height {
+    max-height: 532px;
+}
+
+.active-rc {
+    background-color: var(--label-background) !important;
+    color: white !important;
+    border-color: var(--border-color) !important;
+}
+
+.tab-rc {
+    color: white !important;
+    background-color: var(--background-light) !important;
+    border-color: var(--background-light) !important;
+}
+
+.tab-rc:hover {
+    background-color: var(--background-dark) !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+#rcpanels {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+    padding-top: 5px;
+}
+
+#commandsPanel,
+#grblPanel,
+#filesPanel,
+#controlPanel {
+    min-width: 600px;
+}
+
