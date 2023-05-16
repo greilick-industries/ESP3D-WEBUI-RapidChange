@@ -11,8 +11,9 @@ const rcPrefixLength = 13;
 const magSettingsLabels = [ 
     'collet', 
     'pockets', 
-    'direction', 
-    'orientation', 
+    'magazine_direction',
+    'z_direction', 
+    'orientation',
     'probe', 
     'disable_tool_recognition' 
 ];
@@ -56,6 +57,41 @@ window.addEventListener('load', () => {
     id('settingtablink').addEventListener('click', unloadConfigSettings);
     buildCategoryMap();
 });
+
+function calculateDefaultZeds() {
+    const engageValue = getSettingInput('engage_z', 'text').value;
+    setDefaultValue(engageValue, 7.000, 'back_off_engage_z', 'text');
+    setDefaultValue(engageValue, 20.000, 'spindle_start_z', 'text');
+    setDefaultValue(engageValue, 50.000, 'tool_recognition_z', 'text');
+    setDefaultValue(engageValue, 140.000, 'safe_clearance_z', 'text');
+}
+
+function setDefaultValue(baseValue, offset, settingLabel, inputType) {
+    getSettingInput(settingLabel, inputType).value = (Number.parseFloat(baseValue) + offset).toFixed(3);
+    getSettingInput(settingLabel, 'button').click();
+}
+
+function getSettingInput(labelSuffix, inputType) {
+    let inputSelector;
+    switch (inputType) {
+        case 'text':
+            inputSelector = 'input[type="text"]';
+            break;
+        case 'select':
+            inputSelector = 'select';
+            break;
+        case 'button':
+            inputSelector = 'button';
+            break;
+        default:
+            break;
+    }
+
+    return rcSettings
+        .find(s => s.label === rcPrefix + labelSuffix)
+        .clonedEl
+        .querySelector(inputSelector);
+}
 
 function openSettingsTree() {
     id('tree_setting_filter').click();
