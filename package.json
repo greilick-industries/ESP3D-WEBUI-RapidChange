@@ -1,6 +1,9 @@
 {
   "name": "ESP3D-WebUI",
   "description": "Web UI for ESP3D",
+  "scripts": {
+    "build": "gulp package --lang en"
+  },
   "devDependencies": {
     "del": "6.0.0",
     "deprecated": "latest",
