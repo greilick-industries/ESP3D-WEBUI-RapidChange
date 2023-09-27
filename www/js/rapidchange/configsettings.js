@@ -4,7 +4,7 @@ var coordSettingsRoot;
 var speedSettingsRoot;
 var zedSettingsRoot;
 var touchSettingsRoot;
-var infraredSettingsRoot;
+// var infraredSettingsRoot;
 var dustCoverSettingsRoot;
 var configSettingsLoaded = false;
 const rcPrefix = '/RapidChange/'
@@ -46,12 +46,12 @@ const touchSettingsLabels = [
     'touch_probe_feedrate',
     'touch_probe_feedrate_initial' 
 ];
-const infraredSettingsLabels = [
-    'infrared_probe_start_z',
-    'infrared_tool_setter_z',
-    'infrared_probe_feedrate',
-    'spin_speed_infrared_probe'
-];
+// const infraredSettingsLabels = [
+//     'infrared_probe_start_z',
+//     'infrared_tool_setter_z',
+//     'infrared_probe_feedrate',
+//     'spin_speed_infrared_probe'
+// ];
 const dustCoverSettingsLabels = [
     'dust_cover_use_axis',
     'dust_cover_axis',
@@ -116,7 +116,7 @@ function buildCategoryMap() {
     speedSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'speed'));
     zedSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'zed'));
     touchSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'touch'));
-    infraredSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'infrared'));
+    // infraredSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'infrared'));
     dustCoverSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'cover'));
 }
 
@@ -126,7 +126,7 @@ function getSettingsRoots() {
     speedSettingsRoot = id('speed_settings_list');
     zedSettingsRoot = id('zed_settings_list');
     touchSettingsRoot = id('touch_settings_list');
-    infraredSettingsRoot = id('infrared_settings_list');
+    // infraredSettingsRoot = id('infrared_settings_list');
     dustCoverSettingsRoot = id('dust_cover_settings_list');
 }
 
@@ -199,9 +199,9 @@ function appendListItemElements() {
             case 'touch':
                 touchSettingsRoot.append(s.listItemEl);
                 break;
-            case 'infrared':
-                infraredSettingsRoot.append(s.listItemEl);
-                break;
+            // case 'infrared':
+            //     infraredSettingsRoot.append(s.listItemEl);
+            //     break;
             case 'cover':
                 dustCoverSettingsRoot.append(s.listItemEl);
                 break;
@@ -234,7 +234,7 @@ function unloadConfigSettings() {
         zedSettingsRoot.innerHTML = '';
         speedSettingsRoot.innerHTML = '';
         touchSettingsRoot.innerHTML = '';
-        infraredSettingsRoot.innerHTML = '';
+        // infraredSettingsRoot.innerHTML = '';
         rcSettings = [];
         configSettingsLoaded = false;
     }
