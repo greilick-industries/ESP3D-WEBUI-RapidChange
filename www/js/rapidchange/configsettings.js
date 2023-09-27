@@ -5,6 +5,7 @@ var speedSettingsRoot;
 var zedSettingsRoot;
 var touchSettingsRoot;
 var infraredSettingsRoot;
+var dustCoverSettingsRoot;
 var configSettingsLoaded = false;
 const rcPrefix = '/RapidChange/'
 const rcPrefixLength = 13;
@@ -42,13 +43,21 @@ const touchSettingsLabels = [
     'touch_probe_start_z', 
     'touch_tool_setter_z', 
     'touch_probe_max_distance', 
-    'touch_probe_feedrate' 
+    'touch_probe_feedrate',
+    'touch_probe_feedrate_initial' 
 ];
 const infraredSettingsLabels = [
     'infrared_probe_start_z',
     'infrared_tool_setter_z',
     'infrared_probe_feedrate',
     'spin_speed_infrared_probe'
+];
+const dustCoverSettingsLabels = [
+    'dust_cover_use_axis',
+    'dust_cover_axis',
+    'dust_cover_pos_open',
+    'dust_cover_pos_closed',
+    'dust_cover_feedrate'
 ];
 const categoryMap = new Map();
 
@@ -108,6 +117,7 @@ function buildCategoryMap() {
     zedSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'zed'));
     touchSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'touch'));
     infraredSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'infrared'));
+    dustCoverSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'cover'));
 }
 
 function getSettingsRoots() {
@@ -117,6 +127,7 @@ function getSettingsRoots() {
     zedSettingsRoot = id('zed_settings_list');
     touchSettingsRoot = id('touch_settings_list');
     infraredSettingsRoot = id('infrared_settings_list');
+    dustCoverSettingsRoot = id('dust_cover_settings_list');
 }
 
 function fetchRCSettings() {
@@ -190,6 +201,9 @@ function appendListItemElements() {
                 break;
             case 'infrared':
                 infraredSettingsRoot.append(s.listItemEl);
+                break;
+            case 'cover':
+                dustCoverSettingsRoot.append(s.listItemEl);
                 break;
             default:
                 console.log('Settings category does not exist.');
