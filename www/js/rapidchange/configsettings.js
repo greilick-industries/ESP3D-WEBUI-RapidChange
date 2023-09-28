@@ -220,11 +220,13 @@ function loadConfigSettings() {
 function unloadConfigSettings() {
     if (configSettingsLoaded) {
         pocketsRoot.innerHTML = '';
-        optionsRoot.innerHTML = '';
-        toolRecognitionRoot.innerHTML = '';
+        referencesRoot.innerHTML = '';
         speedsRoot.innerHTML = '';
+        optionsRoot.innerHTML = '';
+        toolSetRefRoot.innerHTML = '';
         touchOffRoot.innerHTML = '';
-        // infraredSettingsRoot.innerHTML = '';
+        toolRecognitionRoot.innerHTML = '';
+        dustCoverRoot.innerHTML = '';
         rcSettings = [];
         configSettingsLoaded = false;
     }
