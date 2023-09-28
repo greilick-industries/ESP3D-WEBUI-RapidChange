@@ -24,12 +24,8 @@ function getFileText() {
             let value = getSettingValue(s) + '\n';
             fileText += name + value;
         });
-        const dustCoverPinValue = id('dust_cover_pin').value;
-        const infraredPinValue = id('infrared_pin').value;
-        const dustCoverPin = dustCoverPinValue == '' ? 'NO_PIN' : 'GPIO.' + dustCoverPinValue;
-        const infraredPin = infraredPinValue == '' ? 'NO_PIN' : 'GPIO.' + infraredPinValue;
-        fileText += '  dust_cover_pin: ' + dustCoverPin + '\n';
-        fileText += '  infrared_pin: ' + infraredPin;  
+        fileText += '  dust_cover_pin: NO_PIN\n';
+        fileText += '  tool_recognition_pin: NO_PIN';  
     }
     return fileText;
 }
