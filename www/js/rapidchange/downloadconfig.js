@@ -24,8 +24,8 @@ function getFileText() {
             let value = getSettingValue(s) + '\n';
             fileText += name + value;
         });
-        fileText += '  dust_cover_pin: NO_PIN';
-        fileText += '  infrared_pin: NO_PIN';  
+        fileText += '  dust_cover_pin: NO_PIN\n';
+        fileText += '  tool_recognition_pin: NO_PIN';  
     }
     return fileText;
 }
