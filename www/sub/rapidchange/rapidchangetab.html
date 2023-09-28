@@ -1,26 +1,29 @@
 <div id="rapidchangetab" class="tabcontent">
     <div class="panel-flex-col">
         <div class="panels-bar">
-            <button id="mag-opt-btn" type="button" class="btn btn-rc" onclick="togglePanel ('mag-opt-btn', 'magazine_settings')">Magazine Options</button>
-            <button id="coord-btn" type="button" class="btn btn-rc" onclick="togglePanel('coord-btn', 'coordinate_settings')">XY Coordinates</button>
-            <button id="zed-btn" type="button" class="btn btn-rc" onclick="togglePanel('zed-btn', 'zed_settings')">Z Coordinates</button>
-            <button id="speed-btn" type="button" class="btn btn-rc" onclick="togglePanel('speed-btn', 'speed_settings')">Speeds</button>
-            <button id="touch-btn" type="button" class="btn btn-rc" onclick="togglePanel('touch-btn', 'touch_settings')">Touch Probe</button>
+            <button id="pockets-btn" type="button" class="btn btn-rc" onclick="togglePanel ('pockets-btn', 'pocket_settings')">Pockets</button>
+            <button id="references-btn" type="button" class="btn btn-rc" onclick="togglePanel('references-btn', 'reference_settings')">Magazine References</button>
+            <button id="speed-btn" type="button" class="btn btn-rc" onclick="togglePanel('speed-btn', 'speed_settings')">Speeds and Feeds</button>
+            <button id="options-btn" type="button" class="btn btn-rc" onclick="togglePanel('options-btn', 'option_settings')">Options</button>
+            <button id="tool_setter_ref-btn" type="button" class="btn btn-rc" onclick="togglePanel('tool_setter_ref-btn', 'tool_setter_ref_settings')">Tool Setter References</button>
+            <button id="touch-btn" type="button" class="btn btn-rc" onclick="togglePanel('touch-btn', 'touch_settings')">Touch Off</button>
+            <button id="tool_rec-btn" type="button" class="btn btn-rc" onclick="togglePanel('tool_rec-btn', 'tool_rec_settings')">Tool Recognition</button>
             <button id="dust-cover-btn" type="button" class="btn btn-rc" onclick="togglePanel('dust-cover-btn', 'dust_cover_settings')">Dust Cover</button>
-            <button id="pins-btn" type="button" class="btn btn-rc" onclick="togglePanel('pins-btn', 'pin_settings')">Pins</button>
+            
             <button id="control-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('control-btn', 'controlPanel')">Controls Panel</button>
             <button id="command-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('command-btn', 'commandsPanel')">Command Panel</button>
             <button id="grbl-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('grbl-btn', 'grblPanel')">Grbl Panel</button>
             <button id="files-btn" type="button" class="btn btn-rc-orange" onclick="togglePanel('files-btn', 'filesPanel')">Files Panel</button>
         </div>
         <div id="rcpanels">
-            <file-include w3-include-html="'sub/rapidchange/magazinesettings.html'"></file-include>
-            <file-include w3-include-html="'sub/rapidchange/coordinatesettings.html'"></file-include>
-            <file-include w3-include-html="'sub/rapidchange/zedsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/pocketsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/referencesettings.html'"></file-include>
             <file-include w3-include-html="'sub/rapidchange/speedsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/optionsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/toolsetterrefsettings.html'"></file-include>
             <file-include w3-include-html="'sub/rapidchange/touchsettings.html'"></file-include>
+            <file-include w3-include-html="'sub/rapidchange/toolrecsettings.html'"></file-include>
             <file-include w3-include-html="'sub/rapidchange/dustcoversettings.html'"></file-include>
-            <file-include w3-include-html="'sub/rapidchange/pinsettings.html'"></file-include>
         </div>
         
     </div>

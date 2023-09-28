@@ -1,63 +1,61 @@
 var rcSettings = [];
-var magSettingsRoot;
-var coordSettingsRoot;
-var speedSettingsRoot;
-var zedSettingsRoot;
-var touchSettingsRoot;
-// var infraredSettingsRoot;
-var dustCoverSettingsRoot;
+var pocketsRoot;
+var referencesRoot;
+var speedsRoot;
+var optionsRoot;
+var toolSetRefRoot;
+var touchOffRoot;
+var toolRecognitionRoot;
+var dustCoverRoot;
 var configSettingsLoaded = false;
 const rcPrefix = '/RapidChange/'
 const rcPrefixLength = 13;
-const magSettingsLabels = [ 
-    'collet', 
-    'pockets', 
-    'magazine_direction',
-    'z_direction', 
-    'orientation',
-    'probe', 
-    'disable_tool_recognition' 
+const pocketsLabels = [ 
+    'alignment',
+    'direction',
+    'number_of_pockets', 
+    'pocket_offset',
 ];
-const coordSettingsLabels = [ 
-    'pocket_one_x_pos', 
-    'pocket_one_y_pos', 
-    'manual_x_pos', 
-    'manual_y_pos' 
+const referencesLabels = [
+    'x_pocket_1',
+    'y_pocket_1',
+    'z_engage',
+    'z_traverse',
+    'z_safe_clearance',
 ];
-const speedSettingsLabels = [ 
-    'engage_feedrate', 
-    'spin_speed_engage_cw', 
-    'spin_speed_engage_ccw' 
+const speedLabels = [ 
+    'engage_feed_rate', 
+    'load_rpm', 
+    'unload_rpm' 
 ];
-const zedSettingsLabels = [ 
-    'engage_z', 
-    'back_off_engage_z', 
-    'spindle_start_z', 
-    'tool_recognition_z', 
-    'safe_clearance_z' 
+const optionsLabels = [ 
+    'tool_recognition_enabled',
+    'tool_setter_enabled',
+    'dust_cover_enabled'
 ];
-const touchSettingsLabels = [ 
-    'touch_probe_x_pos', 
-    'touch_probe_y_pos', 
-    'go_to_touch_probe_z', 
-    'touch_probe_start_z', 
-    'touch_tool_setter_z', 
-    'touch_probe_max_distance', 
-    'touch_probe_feedrate',
-    'touch_probe_feedrate_initial' 
+const toolSetterRefLabels = [
+    'x_tool_setter', 
+    'y_tool_setter', 
+    'z_seek_start', 
+    'z_safe_tool_setter', 
 ];
-// const infraredSettingsLabels = [
-//     'infrared_probe_start_z',
-//     'infrared_tool_setter_z',
-//     'infrared_probe_feedrate',
-//     'spin_speed_infrared_probe'
-// ];
+const touchOffLabels = [ 
+    'set_tool_offset',
+    'seek_feed_rate',
+    'seek_retreat',
+    'set_feed_rate',
+    'set_tool_max_travel', 
+];
+const toolRecognitionLabels = [ 
+    'z_tool_recognition_zone_1',
+    'z_tool_recognition_zone_2',
+];
+
 const dustCoverSettingsLabels = [
-    'dust_cover_use_axis',
     'dust_cover_axis',
-    'dust_cover_pos_open',
-    'dust_cover_pos_closed',
-    'dust_cover_feedrate'
+    'dust_cover_open_position',
+    'dust_cover_closed_position',
+    'dust_cover_use_output'
 ];
 const categoryMap = new Map();
 
@@ -66,19 +64,6 @@ window.addEventListener('load', () => {
     id('settingtablink').addEventListener('click', unloadConfigSettings);
     buildCategoryMap();
 });
-
-function calculateDefaultZeds() {
-    const engageValue = getSettingInput('engage_z', 'text').value;
-    setDefaultValue(engageValue, 7.000, 'back_off_engage_z', 'text');
-    setDefaultValue(engageValue, 20.000, 'spindle_start_z', 'text');
-    setDefaultValue(engageValue, 50.000, 'tool_recognition_z', 'text');
-    setDefaultValue(engageValue, 140.000, 'safe_clearance_z', 'text');
-}
-
-function setDefaultValue(baseValue, offset, settingLabel, inputType) {
-    getSettingInput(settingLabel, inputType).value = (Number.parseFloat(baseValue) + offset).toFixed(3);
-    getSettingInput(settingLabel, 'button').click();
-}
 
 function getSettingInput(labelSuffix, inputType) {
     let inputSelector;
@@ -111,23 +96,25 @@ function closeSettingsTree() {
 }
 
 function buildCategoryMap() {
-    magSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'mag'));
-    coordSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'coord'));
-    speedSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'speed'));
-    zedSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'zed'));
-    touchSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'touch'));
-    // infraredSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'infrared'));
+    pocketsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'pockets'));
+    referencesLabels.forEach(l => categoryMap.set(rcPrefix + l, 'references'));
+    speedLabels.forEach(l => categoryMap.set(rcPrefix + l, 'speed'));
+    optionsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'options'));
+    toolSetterRefLabels.forEach(l => categoryMap.set(rcPrefix + l, 'toolSetRef'));
+    touchOffLabels.forEach(l => categoryMap.set(rcPrefix + l, 'touch'));
+    toolRecognitionLabels.forEach(l => categoryMap.set(rcPrefix + l, 'toolRec'));
     dustCoverSettingsLabels.forEach(l => categoryMap.set(rcPrefix + l, 'cover'));
 }
 
 function getSettingsRoots() {
-    magSettingsRoot = id('magazine_settings_list');
-    coordSettingsRoot = id('coordinate_settings_list');
-    speedSettingsRoot = id('speed_settings_list');
-    zedSettingsRoot = id('zed_settings_list');
-    touchSettingsRoot = id('touch_settings_list');
-    // infraredSettingsRoot = id('infrared_settings_list');
-    dustCoverSettingsRoot = id('dust_cover_settings_list');
+    pocketsRoot = id('pocket_settings_list');
+    referencesRoot = id('reference_settings_list');
+    speedsRoot = id('speed_settings_list');
+    optionsRoot = id('option_settings_list');
+    toolSetRefRoot = id('tool_setter_ref_settings_list');
+    touchOffRoot = id('touch_settings_list');
+    toolRecognitionRoot = id('tool_rec_settings_list');
+    dustCoverRoot = id('dust_cover_settings_list');
 }
 
 function fetchRCSettings() {
@@ -184,26 +171,29 @@ function appendListItemElements() {
     rcSettings.forEach(s => {
         let category = categoryMap.get(s.label);
         switch (category) {
-            case 'mag':
-                magSettingsRoot.append(s.listItemEl);
+            case 'pockets':
+                pocketsRoot.append(s.listItemEl);
                 break;
-            case 'coord':
-                coordSettingsRoot.append(s.listItemEl);
-                break;
-            case 'zed':
-                zedSettingsRoot.append(s.listItemEl);
+            case 'references':
+                referencesRoot.append(s.listItemEl);
                 break;
             case 'speed':
-                speedSettingsRoot.append(s.listItemEl);
+                speedsRoot.append(s.listItemEl);
+                break;
+            case 'options':
+                optionsRoot.append(s.listItemEl);
+                break;
+            case 'toolSetRef':
+                toolSetRefRoot.append(s.listItemEl);
                 break;
             case 'touch':
-                touchSettingsRoot.append(s.listItemEl);
+                touchOffRoot.append(s.listItemEl);
                 break;
-            // case 'infrared':
-            //     infraredSettingsRoot.append(s.listItemEl);
-            //     break;
+            case 'toolRec':
+                toolRecognitionRoot.append(s.listItemEl);
+                break;
             case 'cover':
-                dustCoverSettingsRoot.append(s.listItemEl);
+                dustCoverRoot.append(s.listItemEl);
                 break;
             default:
                 console.log('Settings category does not exist.');
@@ -229,11 +219,11 @@ function loadConfigSettings() {
 
 function unloadConfigSettings() {
     if (configSettingsLoaded) {
-        magSettingsRoot.innerHTML = '';
-        coordSettingsRoot.innerHTML = '';
-        zedSettingsRoot.innerHTML = '';
-        speedSettingsRoot.innerHTML = '';
-        touchSettingsRoot.innerHTML = '';
+        pocketsRoot.innerHTML = '';
+        optionsRoot.innerHTML = '';
+        toolRecognitionRoot.innerHTML = '';
+        speedsRoot.innerHTML = '';
+        touchOffRoot.innerHTML = '';
         // infraredSettingsRoot.innerHTML = '';
         rcSettings = [];
         configSettingsLoaded = false;
