@@ -435,7 +435,58 @@ function initUI_4() {
         build_HTML_setting_list(current_setting_filter);
         AddCmd(closeModal);
         AddCmd(show_main_UI);
+        AddCmd(check_startup_message);
     }
+}
+
+function check_startup_message() {
+    function wait_for_startup_message() {
+        versionPos = -1;
+        for (i = 0; i < Monitor_output.length; i++) {
+            if (Monitor_output[i].startsWith("[MSG:INFO: FluidNC")) {
+                versionPos = i;
+                break;
+            }
+        }
+        if (versionPos < 0) {
+            // wait for startup message
+            setTimeout(wait_for_startup_message, 100);
+            return;
+        }
+        endPos = Monitor_output.indexOf("ok\n", versionPos);
+        if (endPos < 0) {
+            // wait to complete startup message
+            setTimeout(wait_for_startup_message, 100);
+            return;
+        }
+
+        errorOrWarning = true;
+        for (i = 0; i < endPos; i++) {
+            if (Monitor_output[i].startsWith("[MSG:ERR") || Monitor_output[i].startsWith("[MSG:WARN")) {
+                errorOrWarning = true;
+                break;
+            }
+        }
+
+        if (errorOrWarning) {
+            body = "<br/>";
+            for (i = 0; i < endPos; i++) {
+                if (Monitor_output[i].startsWith("[MSG:ERR")) {
+                    body += "<span style='color: red'>" + Monitor_output[i] + "</span><br/>\n";
+                } else if (Monitor_output[i].startsWith("[MSG:WARN")) {
+                    body += "<span style='color: orange'>" + Monitor_output[i] + "</span><br/>\n";
+                } else if (Monitor_output[i].startsWith("[MSG:")) {
+                    body += "<span>" + Monitor_output[i] + "</span><br/>\n";
+                }
+            }
+            alertdlg("Error in start message", body);
+        }
+    }
+
+    startPos = Monitor_output.length;
+    sendCommand("$SS");
+
+    setTimeout(wait_for_startup_message, 100);
 }
 
 function show_main_UI() {
