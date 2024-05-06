@@ -455,12 +455,15 @@ function check_startup_message() {
         }
         endPos = Monitor_output.indexOf("ok\n", versionPos);
         if (endPos < 0) {
-            // wait to complete startup message
-            setTimeout(wait_for_startup_message, 100);
-            return;
+            endPos = Monitor_output.indexOf("<Alarm", versionPos);
+            if (endPos < 0) {
+                // wait to complete startup message
+                setTimeout(wait_for_startup_message, 100);
+                return;
+            }
         }
 
-        errorOrWarning = true;
+        errorOrWarning = false;
         for (i = 0; i < endPos; i++) {
             if (Monitor_output[i].startsWith("[MSG:ERR") || Monitor_output[i].startsWith("[MSG:WARN")) {
                 errorOrWarning = true;
@@ -479,13 +482,12 @@ function check_startup_message() {
                     body += "<span>" + Monitor_output[i] + "</span><br/>\n";
                 }
             }
-            alertdlg("Error in start message", body);
+            alertdlg("Config File Error<br>Fix it or FluidNC will not work", body);
         }
     }
 
     startPos = Monitor_output.length;
     sendCommand("$SS");
-
     setTimeout(wait_for_startup_message, 100);
 }
 
