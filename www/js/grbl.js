@@ -282,7 +282,7 @@ function parseGrblStatus(response) {
         var value = tv[1];
         switch(tag) {
             case "Door":
-                grbl.stateName = tag;
+                grbl.stateName = "Door"+value;;
                 grbl.message = field;
                 break;
             case "Hold":
@@ -373,6 +373,11 @@ function clickableFromStateName(state, hasSD) {
             clickable.pause = true;
             clickable.reset = true;
             break;
+        case 'Door1':
+            clickable.reset = true;
+            break;
+            break;
+        case 'Door0':
         case 'Hold':
             clickable.resume = true;
             clickable.reset = true;

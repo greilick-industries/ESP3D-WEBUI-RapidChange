@@ -442,6 +442,9 @@ function stopAndRecover() {
     // which affects the coordinate display and the jog distances.
     requestModes();
 }
+function unlock() {
+    sendCommand('$X');
+}
 
 var oldCannotClick = null;
 
@@ -498,13 +501,21 @@ function tabletGrblState(grbl, response) {
 
     switch (stateName) {
         case 'Sleep':
+            setLeftButton(false, gray, 'Unlock', null);
+            setRightButton(true, red, 'Reset', stopAndRecover);
+            break;
         case 'Alarm':
-            setLeftButton(true, gray, 'Start', null);
-            setRightButton(false, gray, 'Pause', null);
+            setLeftButton(true, yellow, 'Unlock', unlock);
+            setRightButton(true, red, 'Reset', stopAndRecover);
             break;
         case 'Idle':
             setRunControls();
             break;
+        case 'Door1':
+            setLeftButton(ffalse, gray, 'Resume', resumeGCode);
+            setRightButton(true, red, 'Stop', stopAndRecover);
+            break;
+        case 'Door0':
         case 'Hold':
             setLeftButton(true, green, 'Resume', resumeGCode);
             setRightButton(true, red, 'Stop', stopAndRecover);
@@ -843,7 +854,7 @@ function toggleDropdown() {
 function hideMenu() { toggleDropdown(); }
 function menuFullscreen() { toggleFullscreen(); hideMenu(); }
 function menuReset() { stopAndRecover(); hideMenu(); }
-function menuUnlock() { sendCommand('$X'); hideMenu(); }
+function menuUnlock() { unlock(); hideMenu(); }
 function menuHomeAll() { sendCommand('$H'); hideMenu(); }
 function menuHomeA() { sendCommand('$HA'); hideMenu(); }
 function menuSpindleOff() { sendCommand('M5'); hideMenu(); }
