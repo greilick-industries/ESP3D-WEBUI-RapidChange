@@ -416,6 +416,7 @@ function doRightButton() {
 var green = '#86f686';
 var red = '#f64646';
 var gray = '#f6f6f6';
+var yellow = '#f6f600';
 
 function setRunControls() {
     if (gCodeLoaded) {

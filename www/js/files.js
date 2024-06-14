@@ -599,7 +599,6 @@ function files_start_upload() {
     }
     var url = "/upload";
     var path = files_currentPath;
-    //console.log("upload from " + path );
     var files = id("files_input_file").files;
 
     if (files.value == "" || typeof files[0].name === 'undefined') {
@@ -615,7 +614,6 @@ function files_start_upload() {
         //append file size first to check updload is complete
         formData.append(arg, file.size);
         formData.append('myfile[]', file, path + file.name);
-        //console.log( path +file.name);
     }
     files_error_status = "Upload " + file.name;
     id('files_currentUpload_msg').innerHTML = file.name;
@@ -623,7 +621,6 @@ function files_start_upload() {
     displayNone('files_navigation_buttons');
     if (direct_sd) {
         SendFileHttp(url, formData, FilesUploadProgressDisplay, files_list_success, files_directSD_upload_failed);
-        //console.log("send file");
     }
     id("files_input_file").value = "";
 }
