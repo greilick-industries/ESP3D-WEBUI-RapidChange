@@ -12,6 +12,8 @@ tp.strokeStyle = 'blue';
 
 var cameraAngle = 0;
 
+var haveBoundard = true;
+
 var xMaxTravel = 1000;
 var yMaxTravel = 1000;
 
@@ -120,6 +122,9 @@ var drawOrigin = function(radius) {
 }
 
 var drawMachineBounds = function() {
+    if (!haveBoundary) {
+        return;
+    }
 
     const wcoX = MPOS[0] - WPOS[0];
     const wcoY = MPOS[1] - WPOS[1];
@@ -496,17 +501,17 @@ ToolpathDisplayer.prototype.clear = function() {
 }
 
 ToolpathDisplayer.prototype.showToolpath = function(gcode, modal, initialPosition) {
-    var drawBounds = false;
+    var drawBounds = haveBoundary;
     switch (cameraAngle) {
       case 0:
         obliqueView();
         break;
       case 1:
-        obliqueView();
-        drawBounds = true;
+        topView();
         break;
       case 2:
-        topView();
+        obliqueView();
+        drawBounds = true;
         break;
       case 3:
         topView();
@@ -546,6 +551,10 @@ ToolpathDisplayer.prototype.reDrawTool = function(modal, dpos) {
         tp.putImageData(toolSave, toolX, toolY);
         drawTool(dpos);
     }
+}
+
+ToolpathDisplayer.prototype.disableBoundary = function() {
+    haveBoundary = false;
 }
 
 ToolpathDisplayer.prototype.setXTravel = function(maxTravelX) {
