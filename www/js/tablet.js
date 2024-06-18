@@ -175,13 +175,6 @@ joggers.addEventListener('pointerdown', function(event) {
         timeout_id = setTimeout(long_jog, hold_time, target);
     }
 });
-joggers.addEventListener('click', function(event) {
-    clearTimeout(timeout_id);
-    var target = event.target;
-    if (target.classList.contains('jog')) {
-        sendMove(target.value);
-    }
-});
 joggers.addEventListener('pointerup', function(event) {
     clearTimeout(timeout_id);
     var target = event.target;
@@ -319,7 +312,8 @@ function getAxisValueSuccess(msg) {
 }
 
 function getAxisValueFailure() {
-    console.log("Failed to get axis data");
+    displayer.disableBoundary()
+    // console.log("Failed to get axis data");
 }
 
 function tabletShowMessage(msg, collecting) {
