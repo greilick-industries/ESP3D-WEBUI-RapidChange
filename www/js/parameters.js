@@ -262,7 +262,7 @@ function get_param(param_ref) {
 }
 
 function read_float(s) {
-    var re = /[\d\.]*/
+    var re = /[+-]?[\d\.]*/
     var tail = s.line.substr(s.pos)
     var num = tail.match(re)[0]
     s.pos += num.length
