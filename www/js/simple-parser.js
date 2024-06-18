@@ -56,35 +56,14 @@ var parseLine = function () {
 
         var ln = void 0; // Line number
         var cs = void 0; // Checksum
-        // var words = stripComments(line).match(re) || [];
         line = stripComments(line);
         s = new LinePos(line)
 
         var pos = 0
 
-        // Parse $ commands for Grbl
-        // - $C Check gcode mode
-        // - $H Run homing cycle
-//        if (letter === '$') {
-//            result.cmds = (result.cmds || []).concat('' + letter + argument);
-//            xxx;
-//        }
-
-          // Parse % commands for bCNC and CNCjs
-          // - %wait Wait until the planner queue is empty
-//            if (letter === '%') {
-//                result.cmds = (result.cmds || []).concat(line.trim());
-//                continue;
-//            }
-
-
         // GCode
-        // for (var i = 0; i < words.length; ++i) {
         for (s.pos = 0; s.pos < s.line.length; ) {
-            // var word = words[i];
-            // var letter = word[0].toUpperCase();
-            // var argument = word.slice(1);
-            var letter = s.line[s.pos++]
+            var letter = s.line[s.pos++].toUpperCase()
 
             if (letter === '#') {
                 let status = assign_param(s)
@@ -100,10 +79,6 @@ var parseLine = function () {
                 console.log("Bad number")
                 continue
             }
-            // var value = Number(argument);
-            // if (Number.isNaN(value)) {
-            //    value = argument;
-            // }
 
             // N: Line number
             if (letter === 'N' && typeof ln === 'undefined') {

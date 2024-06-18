@@ -474,7 +474,7 @@ function expression(s) {
 
     s.pos++;
 
-    values[0] = read_number(s)
+    values[0] = read_number(s, true)
     if (isNaN(values[0])) {
         return NaN;
     }
@@ -484,7 +484,7 @@ function expression(s) {
         return NaN;
 
     for (; operators[0] !== NGCBinaryOp.RightBracket;) {
-        values[stack_index] = read_number(s);
+        values[stack_index] = read_number(s, true);
         if (isNaN(values[stack_index]))
             return NaN
 
