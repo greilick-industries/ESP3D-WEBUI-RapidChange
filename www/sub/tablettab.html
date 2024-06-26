@@ -155,7 +155,7 @@
         </div>
         <div class="col-1"> </div>
         <div class="col-4">
-          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in X" onclick="goAxisByValue('X', 0)">
+          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in X" onclick="goto0('X')">
             &#8594;X0
           </button>
         </div>
@@ -170,7 +170,7 @@
         </div>
         <div class="col-1"> </div>
         <div class="col-4">
-          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in Y" onclick="goAxisByValue('Y', 0)">
+          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in Y" onclick="goto0('Y')">
             &#8594;Y0
           </button>
         </div>
@@ -185,7 +185,7 @@
         </div>
         <div class="col-1"> </div>
         <div class="col-4">
-          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in Z" onclick="goAxisByValue('Z', 0)">
+          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in Z" onclick="goto0('Z')">
             &#8594;Z0
           </button>
         </div>
@@ -200,7 +200,7 @@
         </div>
         <div class="col-1"> </div>
         <div class="col-4">
-          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in A" onclick="goAxisByValue('A', 0)">
+          <button type="button" class="btn btn-default btn-goto" title="Goto 0 in A" onclick="goto0('A')">
             &#8594;A0
           </button>
         </div>
@@ -243,7 +243,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.001"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog00"
             >
             0.001
@@ -254,7 +254,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.01"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog01"
             >
             0.01
@@ -265,7 +265,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.1"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog02"
             >
             0.1
@@ -276,7 +276,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 1"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog03"
             >
             1
@@ -336,7 +336,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.003"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog10"
             >
             0.003
@@ -347,7 +347,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.03"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog11"
             >
             0.03
@@ -358,7 +358,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.3"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog12"
             >
             0.3
@@ -369,7 +369,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 3"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog13"
             >
             3
@@ -408,7 +408,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.005"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog20"
             >
             0.005
@@ -419,7 +419,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.05"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog21"
             >
             0.05
@@ -430,7 +430,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 0.5"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog22"
             >
             0.5
@@ -441,7 +441,7 @@
             type="button"
             class="btn btn-default set-distance"
             title="Jog by 5"
-            onclick="btnSetDistance()"
+            onclick="btnSetDistance(event)"
             id="jog23"
             >
             5
@@ -516,12 +516,12 @@
     </div>
   </div>
   <div class="status" id="status">
-    <div class="col-5 text-column">
-      <div class="messages" id="gcode-states"></div>
-      <!-- <textarea class="messages" id="messages" rows="2" spellcheck="false" readonly>Serial Messages</textarea> -->
-      <div class="messages" id="messages">Serial Messages</div>
+    <div id='messagepane' class="col-5">
+      <div class="msg" id="gcode-states"></div>
+      <!-- <textarea class="msg" id="messages" rows="2" spellcheck="false" readonly>Serial Messages</textarea> -->
+      <div class="msg" id="messages">Serial Messages</div>
 
-      <textarea class="messages" id="gcode" placeholder="GCode File Display" spellcheck="false"" readonly>
+      <textarea class="msg" id="gcode" placeholder="GCode File Display" spellcheck="false"" readonly>
       </textarea>
     </div>
     <!-- position:relative is necessary as a container for position:absolute in the expand button -->
