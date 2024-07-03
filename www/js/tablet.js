@@ -1,27 +1,5 @@
 const n_axes = 4;
 
-const exitFullscreen = () => {
-    try {
-        document.exitFullscreen();
-    } catch (exception) {
-        try {
-            document.webkitExitFullscreen();
-        } catch (exception) {
-            return;
-        }
-    }
-    messages.rows = 2;
-    messages.scrollTop = messages.scrollHeight;
-}
-
-const toggleFullscreen = () => {
-    if (document.fullscreenElement) {
-        exitFullscreen();
-    } else {
-        enterFullscreen();
-    }
-}
-
 const tabletClick = () => {
     if (window.navigator && window.navigator.vibrate) {
         window.navigator.vibrate(200);
@@ -99,7 +77,6 @@ const jogTo = (axisAndDistance) => {
     }
 
     const cmd = '$J=G91F' + feedrate + axisAndDistance + '\n';
-    // tabletShowMessage("JogTo " + cmd);
     sendCommand(cmd);
 }
 
@@ -111,6 +88,10 @@ const goAxisByValue = (axis, coordinate) => {
 const goto0 = (axis) => {
     goAxisByValue(axis, 0)
 }
+
+const btnOverride = (event) => { tabletClick(); sendRealtimeCmd(event.target.value); };
+const btnFeedOvrCancel = (event) => { tabletClick(); sendRealtimeCmd('\x90') };
+const btnSpindleOvrCancel = (event) =>  { tabletClick(); sendRealtimeCmd('\x99') };
 
 const btnGoto0 = (event) => {
     goto0(event.target.value)
@@ -349,7 +330,7 @@ const doRightButton = (event) => {
 const green = '#86f686';
 const red = '#f64646';
 const gray = '#f6f6f6';
-const yellow = '#f6f600';
+const yellow = '#ffffa8';
 
 let gCodeLoaded = false;
 const setRunControls = () => {
@@ -436,8 +417,8 @@ const tabletGrblState = (grbl) => {
     const cannotClick = stateName == 'Run' || stateName == 'Hold';
     // Recompute the layout only when the state changes
     if (oldCannotClick != cannotClick) {
-        selectDisabled('.control-pad .form-control', cannotClick);
-        selectDisabled('.control-pad .btn', cannotClick);
+        selectDisabled('.jog-controls .form-control', cannotClick);
+        selectDisabled('.jog-controls .btn', cannotClick);
         selectDisabled('.dropdown-toggle', cannotClick);
         selectDisabled('.axis-position .position', cannotClick);
         selectDisabled('.axis-position .form-control', cannotClick);
@@ -489,13 +470,11 @@ const tabletGrblState = (grbl) => {
             case 'M3': spindleDirection = 'CW'; break;
             case 'M4': spindleDirection = 'CCW'; break;
             case 'M5': spindleDirection = 'Off'; break;
-            default: spindleDirection = ''; break;
         }
     }
     setText('spindle-direction', spindleDirection);
 
     spindleSpeed = grbl.spindleSpeed ? Number(grbl.spindleSpeed) : '';
-    setText('spindle-speed', spindleSpeed);
 
     const now = new Date();
     setText('time-of-day', now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0'));
@@ -523,6 +502,14 @@ const tabletGrblState = (grbl) => {
 
         const rateText = rateNumber +
             (modal.units == 'G21' ? ' mm/min' : ' in/min');
+
+        setText('feed', rateNumber);
+        setText('spindle-speed', spindleSpeed);
+        if (OVRchanged) {
+            OVRchanged = false;
+            setText('feed-ovr', OVR.feed + '%');
+            setText('spindle-ovr', OVR.spindle + '%');
+        }
 
         stateText = rateText + " " + spindleSpeed + " " + spindleDirection;
     } else {
@@ -574,14 +561,16 @@ const toggleVisualizer = (event) => {
 const contractVisualizer = () => {
     id('mdifiles').hidden = false;
     id('setAxis').hidden = false;
-    id('control-pad').hidden = false;
+    id('jog-controls').hidden = false;
+    id('ovr-controls').hidden = true;
     setBottomHeight();
 }
 
 const expandVisualizer = () => {
     id('mdifiles').hidden = true;
     id('setAxis').hidden = true;
-    id('control-pad').hidden = true;
+    id('jog-controls').hidden = true;
+    id('ovr-controls').hidden = false;
     setBottomHeight();
 }
 
@@ -596,10 +585,16 @@ const clearTabletFileSelector = (message) => {
     }
 }
 
-const populateTabletFileSelector = (files, path) => {
+const populateTabletFileSelector = (files, path, status) => {
     const selector = id('filelist');
 
     const selectedFile = gCodeFilename.split('/').slice(-1)[0];
+
+    if (!files) {
+        clearTabletFileSelector();
+        addOption(selector, status, -3, true, selectedFile == '');
+        return;
+    }
 
     // Normalize path
     if(!path.startsWith('/')) {
@@ -615,7 +610,6 @@ const populateTabletFileSelector = (files, path) => {
 
     // Filter out files that are not directories or gcode files
     files = filterFiles(files);
-
     files_file_list = files;
 
     const inRoot = path === '/';
@@ -808,11 +802,18 @@ const cycleDistance = (up) => {
     }
 };
 
+const downEvent = new PointerEvent('pointerdown');
+const upEvent = new PointerEvent('pointerup');
+const jogClick = (name) => {
+    const button = id(name);
+    button.dispatchEvent(downEvent);
+    button.dispatchEvent(upEvent);
+}
 const clickon = (name) => {
-    //    $('[data-route="workspace"] .btn').removeClass('active');
     const button = id(name);
     button.click();
 }
+
 let ctrlDown = false;
 let oldIndex = null;;
 let newChild = null;
@@ -849,10 +850,6 @@ const altDown = () => {
     const distance = sel.value;
     oldIndex = sel.selectedIndex;
     newChild = addJogDistance(distance / 10);
-}
-
-const jogClick = (name) => {
-    clickon(name);
 }
 
 const tabletIsActive = () => {
@@ -961,9 +958,8 @@ const height = (element) => {
 const heightId = (eid) => {
     return height(id(eid));
 }
-const bodyHeight = () => { return height(document.body); }
 const controlHeight = () => {
-    return heightId('nav-panel') + heightId('axis-position') + heightId('setAxis') + heightId('control-pad');
+    return heightId('nav-panel') + heightId('axis-position') + heightId('setAxis') + heightId('control-pad') + heightId('mdifiles');
 }
 const setBottomHeight = () => {
     if (!tabletIsActive()) {
@@ -972,54 +968,53 @@ const setBottomHeight = () => {
     const residue = bodyHeight() - navbarHeight() - controlHeight();
 
     const tStyle = getComputedStyle(id('tablettab'))
-    const tPad = parseFloat(tStyle.paddingTop) + parseFloat(tStyle.paddingBottom) + 20;
+    const tPad = parseFloat(tStyle.paddingTop) + parseFloat(tStyle.paddingBottom);
     const msgElement = id('status');
-    msgElement.style.height = (residue - tPad) + 'px';
+    msgElement.style.height = (residue - tPad - 10) + 'px';
+}
+
+const handleDown = (event) => {
+    const target = event.target;
+    if (target.classList.contains('jog')) {
+        timeout_id = setTimeout(long_jog, hold_time, target);
+    }
+}
+const handleUp = (event) => {
+    clearTimeout(timeout_id);
+    const target = event.target;
+    if (target.classList.contains('jog')) {
+        if (longone) {
+            longone = false;
+            sendRealtimeCmd('\x85');
+        } else {
+            sendMove(target.value);
+        }
+    }
+}
+const handleOut = (event) => {
+    clearTimeout(timeout_id);
+    const target = event.target;
+    if (target.classList.contains('jog')) {
+        if (longone) {
+            longone = false;
+            sendRealtimeCmd('\x85');
+        }
+    }
 }
 
 const addListeners = () => {
     addInterfaceListeners();
 
+    // We use up/down/out events so long presses will do continuous jogging
+    // Click events are unnecessary (they are equivalent to up+down with a
+    // short interval) and harmful because they can cause double-triggering
+    // of a jog action due to interaction with click and pointerup.
     const joggers = id('jog-controls');
-    joggers.addEventListener('pointerdown', (event) => {
-        const target = event.target;
-        if (target.classList.contains('jog')) {
-            timeout_id = setTimeout(long_jog, hold_time, target);
-        }
-    });
-
-/*
-    joggers.addEventListener('click', (event) => {
-        clearTimeout(timeout_id);
-        const target = event.target;
-        if (target.classList.contains('jog')) {
-            sendMove(target.value);
-        }
-    });
-*/
-    joggers.addEventListener('pointerup', (event) => {
-        clearTimeout(timeout_id);
-        const target = event.target;
-        if (target.classList.contains('jog')) {
-            if (longone) {
-                longone = false;
-                sendRealtimeCmd(0x85);
-            } else {
-                sendMove(target.value);
-            }
-        }
-    });
-
-    joggers.addEventListener('pointerout', (event) => {
-        clearTimeout(timeout_id);
-        const target = event.target;
-        if (target.classList.contains('jog')) {
-            if (longone) {
-                longone = false;
-                sendRealtimeCmd(0x85);
-            }
-        }
-    })
+    for (j of document.getElementsByClassName('jog')) {
+        j.addEventListener('pointerdown', handleDown);
+        j.addEventListener('pointerup', handleUp);
+        j.addEventListener('pointerout', handleOut);
+    }
 
     setJogSelector('mm');
 

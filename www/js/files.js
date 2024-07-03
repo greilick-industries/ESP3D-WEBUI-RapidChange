@@ -497,7 +497,7 @@ function files_go_levelup() {
 function files_build_display_filelist(displaylist) {
     if (typeof displaylist == 'undefined') displaylist = true;
 
-    populateTabletFileSelector(files_file_list, files_currentPath);
+    populateTabletFileSelector(files_file_list, files_currentPath, 'No files');
 
     displayNone('files_uploading_msg');
     displayNone('files_list_loader');

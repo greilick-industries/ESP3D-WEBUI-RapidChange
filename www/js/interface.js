@@ -43,7 +43,7 @@ const tabletGetFileList = (path) => {
 }
 
 const toggleDropdown = () => {
-    id('tablet-dropdown-menu').classList.toggle('show');
+    id('tablet-dropdown-menu').classList.toggle('hidden');
 };
 
 const enterFullscreen = () => {
@@ -60,11 +60,33 @@ const enterFullscreen = () => {
     messages.scrollTop = messages.scrollHeight;
 }
 
+const exitFullscreen = () => {
+    try {
+        document.exitFullscreen();
+    } catch (exception) {
+        try {
+            document.webkitExitFullscreen();
+        } catch (exception) {
+            return;
+        }
+    }
+    messages.rows = 2;
+    messages.scrollTop = messages.scrollHeight;
+}
+
+const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+        exitFullscreen();
+    } else {
+        enterFullscreen();
+    }
+}
+
 const addInterfaceListeners = () => {
     id('tablettablink').addEventListener('DOMActivate', fullscreenIfMobile, false);
     id('tablettablink').addEventListener('DOMActivate', setBottomHeight, false);
 
-    id('tablettab').addEventListener('activate', askMachineBbox, false);
+//    id('tablettab').addEventListener('activate', askMachineBbox, false);
 
     id("control-pad").classList.add("open");
 
@@ -80,16 +102,13 @@ const initInterface = () => {
     tabletGetFileList('/');
 };
 
-const tabletInit = () => {
-    initDisplayer()
-    requestModes();
-    initInterface();
+const bodyHeight = () => {
+    return window.innerHeight;
 }
 
 const navbarHeight = () => {
     return heightId('navbar');
 }
-
 
 // UI interface
 const setClickability = (element, visible) => {
@@ -283,7 +302,7 @@ const onstatusIntervalChange = () => {
 //TODO handle authentication issues
 //errorfn cannot be NULL
 const get_status = () => {      
-    sendRealtimeCmd(0x3f); // '?'
+    sendRealtimeCmd('\x3f'); // '?'
 }
 
 const show_grbl_position = (wpos, mpos) => {
@@ -349,25 +368,54 @@ const grblHandleError = (msg) => {
 }
 
 const sendRealtimeCmd = (code) => {
-    const cmd = String.fromCharCode(code)
-    SendPrinterCommand(cmd, false, null, null, code, 1);
+    SendPrinterCommand(code, false, null, null, code, 1);
 }
 
-const loadApp = () => {};
+const loadApp = () => {console.log("LOAD APP");};
 
-document.onreadystatechange = event => {
-    // When HTML/DOM elements are ready:
-    switch(event.target.readyState) {
-        case "loading":
-            break
-        case "interactive":
-            loadApp()
-            break
-        case "complete":
-            addListeners()
-            break
+const onVisible = (element, callback) => {
+    new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if(entry.intersectionRatio > 0) {
+                callback(element);
+                observer.disconnect();
+            }
+        });
+    }).observe(element);
+    if(!callback) {
+        return new Promise(r => callback=r);
     }
-};
+}
+
+let tabletLoaded = false;
+const initTablet = () => {
+    if (!tabletLoaded) {
+        toggleDropdown();
+        addListeners();
+        setBottomHeight();
+        tabletLoaded = true;
+    }
+}
+const setupTablet = () => {
+    attachApp(id('mainuitabscontent'));
+    initDisplayer()
+    initInterface();
+    requestModes();
+    askMachineBbox();
+    onVisible(id('tablettab'), initTablet);
+}
 
 // Filtering is already done 
 const filterFiles = (files) => files;
+
+const refreshFiles = (event) => {
+//    files_refreshFiles(files_currentPath)
+}
+
+const internalUploadFile = () => {
+}
+
+const processMessage = () => {}
+
+const getVersion = () => "Devel";
+

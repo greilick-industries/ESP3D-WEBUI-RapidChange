@@ -89,6 +89,7 @@ window.onload = function() {
         id('command-body').className = "panel-body";
         id('file-body').className = "panel-body panel-height panel-max-height panel-scroll";
     }
+    setupTablet();
 };
 
 var wsmsg = "";
@@ -248,10 +249,7 @@ function Handle_DHT(data) {
     else temps += "C";
     id('DHT_temperature').innerHTML = temps;
 }
-//window.addEventListener("resize", OnresizeWindow);
 
-//function OnresizeWindow(){
-//}
 var total_boot_steps = 5;
 var current_boot_steps = 0;
 
@@ -493,7 +491,6 @@ function check_startup_message() {
 
 function show_main_UI() {
     displayUndoNone('main_ui');
-    tabletInit();
 }
 
 function compareStrings(a, b) {

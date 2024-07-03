@@ -38,7 +38,7 @@ function closeStep(step) {
 function spacer() {
     return "<hr>\n";
 }
-function div(name) {
+function startDiv(name) {
     return "<div id='" + name + "'>";
 }
 function endDiv() {
@@ -133,7 +133,7 @@ function enablestep2() {
     content += translate_text_item("AP define access point / STA allows to join existing network") + "<br>";
     content += spacer();
 
-    content += div("setup_STA");
+    content += startDiv("setup_STA");
 
     content += item("What access point ESP need to be connected to:", EP_STA_SSID);
     content += translate_text_item("You can use scan button, to list available access points.") + "<br>";
@@ -142,7 +142,7 @@ function enablestep2() {
     content += item("Password to join access point:", EP_STA_PASSWORD);
     content += endDiv();
 
-    content += div("setup_AP");
+    content += startDiv("setup_AP");
 
     content += item("What is ESP access point SSID:", EP_AP_SSID);
     content += spacer();
@@ -174,11 +174,11 @@ function enablestep3() {
     content += item("Is ESP connected to SD card:", EP_IS_DIRECT_SD, "define_sd_role");
     content += spacer();
 
-    content += div("setup_SD");
+    content += startDiv("setup_SD");
     content += item("Check update using direct SD access:", EP_DIRECT_SD_CHECK);
     content += spacer();
 
-    content += div("setup_primary_SD");
+    content += startDiv("setup_primary_SD");
     content += item("SD card connected to ESP", EP_PRIMARY_SD);
     content += spacer();
 

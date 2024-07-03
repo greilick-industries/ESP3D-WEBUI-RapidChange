@@ -449,8 +449,51 @@
 	</div>
       </div>
     </div>
-    <div style="display:block"> </div>
 
+    <div id="overrides">
+      <div id="ovr-controls" class="cols-table ovr-row">
+        <div class="cols-tablet ">
+          <div class="col-tablet col-2 axis-label">Feed</div>
+          <div id="feed" class="col-tablet col-2 info-button">1000</div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Decrease feedrate by 10%" value="">--</button>
+          </div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Decrease feedrate by 1%" value="">-</button>
+          </div>
+          <div class="col-tablet col-2">
+            <button id="feed-ovr" class="btn-tablet info-button" type="button" title="Cancel feed override" value="">100%</button>
+          </div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Increase feedrate by 1%" value="">+</button>
+          </div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Increase feedrate by 10%" value="">++</button>
+        </div></div>
+        <div class="cols-tablet ">
+          <div class="col-tablet col-3 axis-label">Spindle</div>
+          <div id="spindle-direction" class="col-tablet col-1 axis-label"></div>
+          <div id="spindle-speed" class="col-tablet col-2 info-button">3000</div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Decrease spindle speed by 10%" value="">--</button>
+          </div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Decrease spindle speed by 1%" value="">-</button>
+          </div>
+          <div class="col-tablet col-2">
+            <button id="spindle-ovr" class="btn-tablet info-button" type="button" title="Cancel spindle override" value="">100%</button>
+          </div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Increase spindle speed by 1%" value="">++</button>
+          </div>
+          <div class="col-tablet col-1">
+            <button class="btn-tablet feed-ovr" type="button" title="Increase spindle speed by 10%" value="">++</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="display:block"> </div>
     <div class="mdifiles" id="mdifiles">
       <div class="col-2" id="mdifiles">
         <input type="text" class="form-control" id="mditext0" placeholder="GCode Command" onFocus="inputFocused()" onBlur="inputBlurred()">
