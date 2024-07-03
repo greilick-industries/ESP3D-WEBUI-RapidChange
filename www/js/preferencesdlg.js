@@ -37,7 +37,8 @@ var defaultpreferenceslist = "[{\
                                             \"proberetract\":\"1.0\",\
                                             \"probetouchplatethickness\":\"0.5\"\
                                             }]";
-var preferences_file_name = '/preferences.json';
+var fallback_preferences_file_name = '/preferences.json';
+var preferences_file_name = '/preferences2.json';
 
 function initpreferences() {
     defaultpreferenceslist = "[{\
@@ -129,6 +130,21 @@ function prefs_toggledisplay(id_source, forcevalue) {
     }
 }
 
+function processFallbackPreferencesGetSuccess(response) {
+    if (response.indexOf("<HTML>") == -1) Preferences_build_list(response);
+    else Preferences_build_list(defaultpreferenceslist);
+}
+
+function processFallbackPreferencesGetFailed(errorcode, response) {
+    console.log("Error " + errorcode + " : " + response);
+    Preferences_build_list(defaultpreferenceslist);
+}
+
+function getFallbackPreferences() {
+    var url = fallback_preferences_file_name;
+    SendGetHttp(url, processFallbackPreferencesGetSuccess, processFallbackPreferencesGetFailed);
+}
+
 function processPreferencesGetSuccess(response) {
     if (response.indexOf("<HTML>") == -1) Preferences_build_list(response);
     else Preferences_build_list(defaultpreferenceslist);
@@ -136,7 +152,8 @@ function processPreferencesGetSuccess(response) {
 
 function processPreferencesGetFailed(errorcode, response) {
     console.log("Error " + errorcode + " : " + response);
-    Preferences_build_list(defaultpreferenceslist);
+    console.log("Trying fallback to preferences.json");
+    getFallbackPreferences();
 }
 
 function Preferences_build_list(response_text) {
@@ -145,6 +162,12 @@ function Preferences_build_list(response_text) {
         if (response_text.length != 0) {
             //console.log(response_text);  
             preferenceslist = JSON.parse(response_text);
+            // This handles the case where the preferences file is in
+            // WebUI3 format, with a top-level object instead of an array
+            if (!Array.isArray(preferenceslist)) {
+                console.log("Invalid preferences format; possibly a WebuI3 file");
+                preferenceslist = JSON.parse(defaultpreferenceslist);
+            }
         } else {
             preferenceslist = JSON.parse(defaultpreferenceslist);
         }
