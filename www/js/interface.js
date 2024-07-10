@@ -1,3 +1,8 @@
+let grblaxis = 3;
+let grblzerocmd = 'X0 Y0 Z0';
+let feedrate = [0, 0, 0, 0, 0, 0];
+let last_axis_letter = 'Z';
+
 let snd = null;
 let sndok = true;
 
@@ -190,6 +195,8 @@ const grbl_clear_status = () => {
 
 let reportType = 'none';
 
+let interval_status = -1;
+
 const disablePolling = () => {
     setAutocheck(false);
     // setValue('statusInterval_check', 0);
@@ -320,6 +327,41 @@ const show_grbl_position = (wpos, mpos) => {
     }
 }
 
+const clickableFromStateName = (state, hasSD) => {
+    const clickable = {
+        resume: false,
+        pause: false,
+        reset: false
+    }
+    switch(state) {
+        case 'Run':
+            clickable.pause = true;
+            clickable.reset = true;
+            break;
+        case 'Door1':
+            clickable.reset = true;
+            break;
+        case 'Door0':
+        case 'Hold':
+            clickable.resume = true;
+            clickable.reset = true;
+            break;
+        case 'Alarm':
+            if (hasSD) {
+                //guess print is stopped because of alarm so no need to pause
+                clickable.resume = true;
+            }
+            break;
+        case 'Idle':
+        case 'Jog':
+        case 'Home':
+        case 'Check':
+        case 'Sleep':
+            break;
+    }
+    return clickable;
+}
+
 const show_grbl_status = (stateName, message, hasSD) => {
     if (stateName) {
         const clickable = clickableFromStateName(stateName, hasSD);
@@ -396,6 +438,10 @@ const initTablet = () => {
         tabletLoaded = true;
     }
 }
+const setupFluidNC = () => {
+    sendCommand('$Report/Interval=300')
+}
+
 const setupTablet = () => {
     attachApp(id('mainuitabscontent'));
     initDisplayer()
