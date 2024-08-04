@@ -369,9 +369,11 @@ const show_grbl_status = (stateName, message, hasSD) => {
         setClickability('sd_resume_btn', clickable.resume);
         setClickability('sd_pause_btn', clickable.pause);
         setClickability('sd_reset_btn', clickable.reset);
-        if (stateName == 'Hold' && probe_progress_status != 0) {
-            probe_failed_notification();
-        }
+
+        // This notification seems unnecessary; the hold state indication is enough
+        // if (stateName == 'Hold' && is_probing) {
+        //     probe_failed_notification('Probe Paused');
+        // }
     }
 
     setHTML('grbl_status_text', translate_text_item(message));
@@ -383,10 +385,6 @@ const show_grbl_SD = (sdName, sdPercent) => {
     setHTML('grbl_SD_status', status);
 }
 
-const sendProbeCommand = () => {
-      // const cmd = "$J=G90 G21 F1000 Z" + (parseFloat(getValue('probetouchplatethickness')) +                                                       parseFloat(getValue('proberetract')));
-      // sendCommand(cmd);
-};
 const mainGrblState = (grblstate) => {
     show_grbl_position(WPOS, MPOS);
     show_grbl_status(grblstate.stateName, grblstate.message, grblstate.sdName);
@@ -403,7 +401,7 @@ const grblHandleOk = () => {
 }
 const grblHandleError = (msg) => {
     if (grbl_errorfn) {
-        grbl_errorfn();
+        grbl_errorfn(msg);
         grbl_errorfn = null;
         grbl_processfn = null;
     }

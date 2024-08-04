@@ -1,9 +1,10 @@
-let probe_progress_status = 0;
+let is_probing = false;
+let probe_fail_reason = '';
 
-const finalize_probing = () => {
+const finalize_probing = (status) => {
     // No need for this when using the FluidNC-specific G38.6 probe command.
     // SendPrinterCommand("G90", true, null, null, 90, 1);
-    probe_progress_status = 0;
+    is_probing = false;
     setClickability('probingbtn', true);
     setClickability('probingtext', false);
     setClickability('sd_pause_btn', false);
@@ -11,9 +12,9 @@ const finalize_probing = () => {
     setClickability('sd_reset_btn', false);
 }
 
-const probe_failed_notification = () => {
-    finalize_probing();
-    alertdlg(translate_text_item("Error"), translate_text_item("Probe failed !"));
+const probe_failed_notification = (msg) => {
+    finalize_probing('failed');
+    alertdlg(translate_text_item("Error"), translate_text_item(msg));
     beep(70, 261);
 }
 
@@ -63,12 +64,18 @@ const show_grbl_probe_status = (probed) => {
     grbl_set_probe_detected(probed);
 }
 
+const probeStartFailed = (msg) => {
+    finalize_probing('');
+    alertdlg(translate_text_item("Error"), translate_text_item(msg));
+    beep(70, 261);
+}
+
 const StartProbeProcess = () => {
     // G38.6 is FluidNC-specific.  It is like G38.2 except that the units
     // are always G21 units, i.e. mm in the usual case, and distance is
     // always incremental.  This avoids problems with probing when in G20
     // inches mode and undoing a preexisting G91 incremental mode
-    const cmd = "G38.6 Z-";
+    let cmd = "G38.6 Z-";
     if (!onprobemaxtravelChange() ||
         !onprobefeedrateChange() ||
         !onproberetractChange() ||
@@ -77,17 +84,16 @@ const StartProbeProcess = () => {
     }
     cmd += parseFloat(getValue('probemaxtravel')) + ' F' + parseInt(getValue('probefeedrate')) + ' P' + getValue('probetouchplatethickness');
     console.log(cmd);
-    probe_progress_status = 1;
-    const restoreReport = false;
+    is_probing = true;
+    probe_fail_reason = '';
+    let restoreReport = false;
     if (reportType == 'none') {
         tryAutoReport(); // will fall back to polled if autoreport fails
         restoreReport = true;
     }
-    SendPrinterCommand(cmd, true, null, null, 38.6, 1);
+    SendPrinterCommand(cmd, true, null, probeStartFailed, 38.6, 1);
     setClickability('probingbtn', false);
     setClickability('probingtext', true);
-    grbl_error_msg = '';
-    setHTML('grbl_status_text', grbl_error_msg);
     if (restoreReport) {
         reportNone();
     }
