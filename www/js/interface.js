@@ -459,6 +459,8 @@ const refreshFiles = (event) => {
 const internalUploadFile = () => {
 }
 
+const uploadButtonName = 'files_input_file';
+
 const processMessage = () => {}
 
 const getVersion = () => "Devel";
