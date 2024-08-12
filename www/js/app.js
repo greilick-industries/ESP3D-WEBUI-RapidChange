@@ -89,7 +89,7 @@ window.onload = function() {
         id('command-body').className = "panel-body";
         id('file-body').className = "panel-body panel-height panel-max-height panel-scroll";
     }
-    tabletInit();
+    setupTablet();
 };
 
 var wsmsg = "";
@@ -249,10 +249,7 @@ function Handle_DHT(data) {
     else temps += "C";
     id('DHT_temperature').innerHTML = temps;
 }
-//window.addEventListener("resize", OnresizeWindow);
 
-//function OnresizeWindow(){
-//}
 var total_boot_steps = 5;
 var current_boot_steps = 0;
 
@@ -436,7 +433,60 @@ function initUI_4() {
         build_HTML_setting_list(current_setting_filter);
         AddCmd(closeModal);
         AddCmd(show_main_UI);
+        AddCmd(check_startup_message);
     }
+}
+
+function check_startup_message() {
+    function wait_for_startup_message() {
+        versionPos = -1;
+        for (i = 0; i < Monitor_output.length; i++) {
+            if (Monitor_output[i].startsWith("[MSG:INFO: FluidNC")) {
+                versionPos = i;
+                break;
+            }
+        }
+        if (versionPos < 0) {
+            // wait for startup message
+            setTimeout(wait_for_startup_message, 100);
+            return;
+        }
+        endPos = Monitor_output.indexOf("ok\n", versionPos);
+        if (endPos < 0) {
+            endPos = Monitor_output.indexOf("<Alarm", versionPos);
+            if (endPos < 0) {
+                // wait to complete startup message
+                setTimeout(wait_for_startup_message, 100);
+                return;
+            }
+        }
+
+        errorOrWarning = false;
+        for (i = 0; i < endPos; i++) {
+            if (Monitor_output[i].startsWith("[MSG:ERR") || Monitor_output[i].startsWith("[MSG:WARN")) {
+                errorOrWarning = true;
+                break;
+            }
+        }
+
+        if (errorOrWarning) {
+            body = "<br/>";
+            for (i = 0; i < endPos; i++) {
+                if (Monitor_output[i].startsWith("[MSG:ERR")) {
+                    body += "<span style='color: red'>" + Monitor_output[i] + "</span><br/>\n";
+                } else if (Monitor_output[i].startsWith("[MSG:WARN")) {
+                    body += "<span style='color: orange'>" + Monitor_output[i] + "</span><br/>\n";
+                } else if (Monitor_output[i].startsWith("[MSG:")) {
+                    body += "<span>" + Monitor_output[i] + "</span><br/>\n";
+                }
+            }
+            alertdlg("Config File Error<br>Fix it or FluidNC will not work", body);
+        }
+    }
+
+    startPos = Monitor_output.length;
+    sendCommand("$SS");
+    setTimeout(wait_for_startup_message, 100);
 }
 
 function show_main_UI() {

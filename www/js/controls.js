@@ -110,7 +110,7 @@ function onPosIntervalChange() {
 }
 
 function get_Position() {
-    SendPrinterCommand("?", false, null, null, 114, 1);
+    get_status();
 }
 
 function Control_get_position_value(label, result_data) {

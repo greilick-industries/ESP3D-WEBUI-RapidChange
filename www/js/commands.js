@@ -74,6 +74,12 @@ function Monitor_output_Update(message) {
         }
         if (out.startsWith("error:")) {
             out = "<font color='red'><b>" + out.toUpperCase() + translate_text_item(out.trim()) + "</b></font>\n";
+        } else if (out.startsWith("[MSG:ERR")) {
+            out = "[<font color='red'>MSG:ERR</font>" + out.substring(8);
+        } else if (out.startsWith("[MSG:WARN")) {
+            out = "[<font color='orange'>MSG:WARN:</font>" + out.substring(9);
+        } else if (out.startsWith("[MSG:INFO")) {
+            out = "[<font color='green'>MSG:INFO</font>" + out.substring(9);
         }
         output += out;
     }

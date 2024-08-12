@@ -358,7 +358,7 @@ function files_refreshFiles(path, usecache) {
     id('files_currentPath').innerHTML = files_currentPath;
     files_file_list = [];
     files_status_list = [];
-    files_build_display_filelist(false);
+    clearTabletFileSelector("Refreshing file list");
     displayBlock('files_list_loader');
     displayBlock('files_nav_loader');
     //this is pure direct SD
@@ -431,7 +431,7 @@ function files_list_success(response_text) {
                 sdname: file_name,
                 size: fsize,
                 isdir: isdirectory,
-                datetime: response.files[i].datetime,
+                datetime: response.files[i].datetime || "",
                 isprintable: isprint
             };
             files_file_list.push(file_entry);
@@ -497,7 +497,7 @@ function files_go_levelup() {
 function files_build_display_filelist(displaylist) {
     if (typeof displaylist == 'undefined') displaylist = true;
 
-    populateTabletFileSelector(files_file_list, files_currentPath);
+    populateTabletFileSelector(files_file_list, files_currentPath, 'No files');
 
     displayNone('files_uploading_msg');
     displayNone('files_list_loader');
@@ -567,7 +567,8 @@ function files_check_if_upload() {
     var canupload = true;
     var files = id("files_input_file").files;
     if (direct_sd) {
-        SendPrinterCommand("[ESP200]", false, process_check_sd_presence);
+        var url = "/command?plain=" + encodeURIComponent("[ESP400]");
+        SendGetHttp(url, process_check_sd_presence);
     } else {
         //no reliable way to know SD is present or not so let's upload
         files_start_upload();
@@ -598,7 +599,6 @@ function files_start_upload() {
     }
     var url = "/upload";
     var path = files_currentPath;
-    //console.log("upload from " + path );
     var files = id("files_input_file").files;
 
     if (files.value == "" || typeof files[0].name === 'undefined') {
@@ -614,7 +614,6 @@ function files_start_upload() {
         //append file size first to check updload is complete
         formData.append(arg, file.size);
         formData.append('myfile[]', file, path + file.name);
-        //console.log( path +file.name);
     }
     files_error_status = "Upload " + file.name;
     id('files_currentUpload_msg').innerHTML = file.name;
@@ -622,7 +621,6 @@ function files_start_upload() {
     displayNone('files_navigation_buttons');
     if (direct_sd) {
         SendFileHttp(url, formData, FilesUploadProgressDisplay, files_list_success, files_directSD_upload_failed);
-        //console.log("send file");
     }
     id("files_input_file").value = "";
 }

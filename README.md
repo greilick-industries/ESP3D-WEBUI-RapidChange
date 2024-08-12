@@ -1,4 +1,11 @@
 # ESP3D-WEBUI 
+
+> [!IMPORTANT]
+> This repository is a fork of the main project which is at https://github.com/luc-github/ESP3D-WEBUI .  We maintain this fork for administrative purposes, not as an attempt to supplant the original. Developing and maintaining such software requires a staggering amount of time and effort.  If you use this software, we highly recommend [donating to the original author](https://github.com/luc-github/ESP3D-WEBUI?tab=readme-ov-file#become-a-sponsor-or-a-supporter) so he can continue his efforts.
+
+The version in this branch includes a tablet-optimized alternative UI that
+is available from the Tablet tab at the top of the page.
+
 [Latest stable release ![Release Version](https://img.shields.io/github/v/release/luc-github/ESP3D-WEBUI?color=green&include_prereleases&style=plastic) ![Release Date](https://img.shields.io/github/release-date/luc-github/ESP3D-WEBUI.svg?style=plastic)](https://github.com/luc-github/ESP3D-WEBUI/releases/latest/) [![Travis (.org) branch](https://img.shields.io/travis/luc-github/ESP3D-WEBUI/2.1?style=plastic)](https://travis-ci.org/github/luc-github/ESP3D-WEBUI)   
 
 [Latest development version ![Development Version](https://img.shields.io/badge/Devt-v3.0-yellow?style=plastic) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/luc-github/ESP3D-WEBUI/3.0?style=plastic)](https://github.com/luc-github/ESP3D-WEBUI/tree/3.0) [![Travis (.org) branch](https://img.shields.io/travis/luc-github/ESP3D-WEBUI/3.0?style=plastic)](https://travis-ci.org/github/luc-github/ESP3D-WEBUI)     
@@ -90,6 +97,21 @@ ESP3D SPIFFS:
 
 ## Installation
 Please use the latest [ESP3D firmware](https://github.com/luc-github/ESP3D/tree/2.1.x) and copy the index.html.gz file on root of SPIFFS, in theory ESP3D have a version of web-ui but it may not be the latest one
+
+## Building
+
+Run the following commands once:
+
+```
+npm init
+git submodule update --init --recursive
+```
+
+Then for each build, run this command:
+```
+gulp package --lang en
+```
+The output file is index.html.gz in the top level directory.
 
 ## Contribution / development
 Check wiki section [Contribution/Development](https://github.com/luc-github/ESP3D-WEBUI/wiki/Compilation---Development)

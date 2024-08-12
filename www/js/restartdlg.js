@@ -6,7 +6,8 @@ function restartdlg() {
     displayBlock('prgrestart');
     id('restartmsg').innerHTML = translate_text_item("Restarting, please wait....");
     showModal();
-    SendPrinterCommand("[ESP444]RESTART", false, restart_esp_success, restart_esp_failed);
+    url = "/command?plain=" + encodeURIComponent("[ESP444]RESTART");
+    SendGetHttp(url, restart_esp_success, restart_esp_failed);
 }
 
 function restart_esp_success(response) {
