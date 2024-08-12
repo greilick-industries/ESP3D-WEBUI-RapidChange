@@ -330,8 +330,8 @@ function smoosh() {
 function compress() {
     return gulp.src('dist/index.html')
         .pipe(gzip({ gzipOptions: { level: 9} }))
-        .pipe(gulp.dest('.'))
-        .pipe(size());
+        .pipe(gulp.dest('.'));
+        // .pipe(size());
 }
 
 gulp.task(clean);
